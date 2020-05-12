@@ -1,0 +1,261 @@
+#include<iostream>
+using namespace std;
+class Node
+{
+private:
+	int stock;
+	string name;
+	Node* next;
+public:
+	friend class Inventory;
+
+};
+class Inventory
+{
+private:
+	Node* head;
+	
+public:
+	Inventory()
+	{
+		head == NULL;
+		
+	}
+
+	void menuForChoice()
+	{
+		
+		cout <<endl<< "Select One Option to Perform" << endl;
+		cout <<endl<< "1.Add New Grocery to Inventory \n 2.Remove Grocery from Inventory \n 3.Grocery with Minimum stock \n 4.Grocery with Maximum stock";
+		cout << "\n 5.Grocery List with Stock in acending order \n 6.Sold Grocery \n 7.Add Stock \n 8.Exit" <<endl<< endl;
+					
+	}
+
+	void addB(string name, int stock)
+	{
+		Node* newnode = new Node;
+		newnode->name = name;
+		newnode->stock = stock;
+		newnode->next = NULL;
+
+		if (head == NULL)
+			head = newnode;
+
+		else
+		{
+			Node* temp = head;
+			while (temp->next != NULL)
+			{
+				temp = temp->next;
+			}
+			temp->next = newnode;
+		
+		}
+
+	}
+
+	void Remove(string name)
+	{
+		Node* temp = head;
+		if (head->name == name)
+		{
+			head = temp->next;
+			temp->next == NULL;
+
+		}
+		else
+		{
+			Node* tmp = head;
+			Node* temp1=NULL;
+			Node* temp2 = NULL;
+
+			while (tmp->name != name)
+			{
+				temp1 = tmp;
+				tmp = tmp->next;
+				//temp2 = temp->next;
+			}
+
+			if (/*temp1->next==temp &&*/ temp->next != NULL)
+			{
+				
+				//temp2 = temp->next;
+				temp1->next = tmp->next;
+				tmp->next == NULL;
+			}
+			else
+			{
+				//temp1->next = temp2;
+				temp1->next == NULL;
+			}
+			
+		}
+	}
+
+	void Ming()
+	{
+		Node* temp = head;
+		int min = temp->stock;
+		while (temp->next != NULL)
+		{
+			temp = temp->next;
+			if (min > temp->stock)
+				min = temp->stock;
+
+			
+		}
+		cout << "Minimum Stock of" << " " << temp->name << " :" << min << endl;
+
+		
+	}
+
+	void Maxg()
+	{
+		Node* temp = head;
+		int min = temp->stock;
+		while (temp->next != NULL)
+		{
+			temp = temp->next;
+			if (min < temp->stock)
+				min = temp->stock;
+
+
+		}
+		cout << "Maximum Stock of" << " " << temp->name << " :" << min << endl;
+	}
+	 
+	void displayAcen()
+	{
+		Node* temp1 = head;
+		Node* temp2 = NULL;
+		Node* trav = head;
+		while (temp1 != NULL)
+		{
+			temp2 = temp1->next;
+
+			while (temp2 != NULL)
+			{
+				int temp;
+				string nam;
+				if (temp1->stock > temp2->stock)
+				{
+					temp = temp1->stock;
+					temp1->stock = temp2->stock;
+					temp2->stock = temp;
+
+					nam = temp1->name;
+					temp1->name = temp2->name;
+					temp2->name = nam;
+
+					
+				}
+				temp2 = temp2->next;
+			}
+			temp1 = temp1->next;
+		}
+		while (trav != NULL)
+		{
+			cout << trav->name << " " << trav->stock << endl;
+			trav = trav->next;
+		}
+
+	}
+
+	void AddStock(string n,int data)
+	{
+		Node* temp = head;
+		while (temp->name != n)
+		{
+			temp = temp->next;
+			
+		}
+		temp->stock = temp->stock + data;
+	}
+
+	void soldStock(string n, int data)
+	{
+		Node* temp = head;
+		while (temp->name != n)
+		{
+			temp = temp->next;
+		}
+		if (data > temp->stock)
+			cout << "Only " << temp->stock << " " << temp->name<<" are available" << endl;
+		else
+			temp->stock = temp->stock - data;
+
+	}
+};
+
+int main()
+{
+	Inventory in;
+	int no;
+	cout << endl << "Enter the number of grocery items in inventory system:" << endl << endl;
+	cin >> no;
+	cout <<endl<< "Enter the names of 5 grocery item names in invetory system and its initial stock:" <<endl<<endl;
+	for (int i = 0;i < no;i++)
+	{
+		string name;
+		int stock;
+		cin >> name >> stock;
+		in.addB(name,stock);
+	}
+	while (1)
+	{
+		in.menuForChoice();
+		int choice;
+		cin >> choice;
+
+		string name;
+		int stock;
+		switch (choice)
+		{
+			
+		case 1:cout << "Enter New Grocery Item to add:";
+			   cin >> name;
+			   cout << "Enter " << name << " Initial Stock:";
+			   cin >> stock;
+			   in.addB(name, stock);
+			   break;
+
+		case 2://string name;
+			cout << "Enter Grocery name to remove:";
+			cin >> name;
+			in.Remove(name);
+			break;
+
+		case 3:in.Ming();
+			break;
+
+		case 4:in.Maxg();
+			break;
+
+		case 5:in.displayAcen();
+			break;
+
+		case 6:cout << "Enter sold grocery item name:";
+			cin >> name;
+			int qty;
+			cout << "Enter " << name << " sold Quantity:";
+			cin >> qty;
+			in.soldStock(name,qty);
+			break;
+
+		case 7:cout << "Enter grocery item name to add stock:";
+			cin >> name;
+			//int qty;
+			cout << "Enter " << name << " Quantity to add to stock:";
+			cin >> qty;
+			in.AddStock(name, qty);
+			break;
+
+		case 8:exit(1);
+			break;
+
+		default:cout << "Invalid Input" << endl;
+
+		
+		}
+	}
+}
