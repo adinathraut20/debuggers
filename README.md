@@ -1,2 +1,3 @@
 # debuggers
-Team A debugggers
+To run this code use any IDE.
+
